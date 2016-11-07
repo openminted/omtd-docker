@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  tomcat:
+    container_name: tomcat
+    build: ../omtd-registry
+    links:
+      - db
+      - elastic
+      - jms
+    ports:
+      - "8888:8080"
+
+  elastic:
+    container_name: elastic
+    image: elasticsearch:5
+#    ports:
+#      - "9200:9200"
+
+  db:
+    container_name: postgres
+    build : registry-postgres
+#    ports:
+#      - "5431:5432"
+
+  jms:
+    container_name: jms
+    image: rmohr/activemq:5.14.0-alpine
