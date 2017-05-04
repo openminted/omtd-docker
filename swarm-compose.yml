@@ -52,7 +52,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    mem_limit: 1g
     cap_add:
       - IPC_LOCK
     volumes:
@@ -64,7 +63,9 @@ services:
       - esnet
     deploy:
       placement:
-        constraints : [node.role == manager]  
+        constraints : [node.role == manager]
+      resources:
+        mem_limit : 1g
 
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.2.2
@@ -74,7 +75,7 @@ services:
       - bootstrap.memory_lock=true
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.ping.unicast.hosts=esnet"
+      - "discovery.zen.ping.unicast.hosts=elastic"
     ulimits:
       memlock:
         soft: -1
@@ -82,7 +83,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    mem_limit: 1g
     cap_add:
       - IPC_LOCK
     volumes:
@@ -91,7 +91,9 @@ services:
       - esnet
     deploy:
       placement:
-        constraints : [node.role == manager]  
+        constraints : [node.role == worker]  
+      resources:
+        mem_limit : 1g
 
 volumes:
   esdata1:
